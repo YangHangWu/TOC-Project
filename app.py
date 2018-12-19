@@ -1,17 +1,31 @@
-from bottle import route, run, request, abort, static_file
+from bottle import route, run, request, abort, static_file, Bottle
 
+import os
 from fsm import TocMachine
 
 
 VERIFY_TOKEN = "123"
+
+PORT = os.environ['PORT']
 machine = TocMachine(
-    states=['final','user','state0','state1','state2','state3','state4','state5','state6','state7','state8','state9'],
+    states=['final','user','state0','state1','state2','state3','state4','state5','state6','state7','state8','useless1','useless2'],
     transitions=[
         {
             'trigger': 'go_to',
             'source': 'user',
             'dest': 'state0',
         },
+        {
+            'trigger': 'go_back',
+            'source': 'user',
+            'dest': 'useless1',
+        },
+        {
+            'trigger': 'go_back',
+            'source': 'user',
+            'dest': 'useless2',
+        },
+
         {
             'trigger': 'advance',
             'source': 'state0',
@@ -38,19 +52,19 @@ machine = TocMachine(
         },
 	{
             'trigger': 'advance',
-            'source': 'state2',
+            'source': ['state2','state8'],
             'dest': 'state3',
             'conditions': 'is_going_to_state3'
         },
 	{
             'trigger': 'advance',
-            'source': 'state2',
+            'source': ['state2','state8'],
             'dest': 'state4',
             'conditions': 'is_going_to_state4'
         },
 	{
             'trigger': 'advance',
-            'source': 'state2',
+            'source': ['state2','state8'],
             'dest': 'state5',
             'conditions': 'is_going_to_state5'
         },
@@ -60,12 +74,7 @@ machine = TocMachine(
             'dest': 'state8',
             'conditions': 'is_going_to_state8'
         },
-	{
-            'trigger': 'advance',
-            'source': 'state7',
-            'dest': 'state9',
-            'conditions': 'is_going_to_state9'
-        },
+
 
         {
             'trigger': 'go_back',
@@ -83,8 +92,10 @@ machine = TocMachine(
     show_conditions=True,
 )
 
+app = Bottle()
 
-@route("/webhook", method="GET")
+
+@app.route("/webhook", method="GET")
 def setup_webhook():
     mode = request.GET.get("hub.mode")
     token = request.GET.get("hub.verify_token")
@@ -98,7 +109,7 @@ def setup_webhook():
         abort(403)
 
 
-@route("/webhook", method="POST")
+@app.route("/webhook", method="POST")
 def webhook_handler():
     body = request.json
     print('\nFSM STATE: ' + machine.state)
@@ -114,12 +125,13 @@ def webhook_handler():
     return 'OK'
 
 
-@route('/show-fsm', methods=['GET'])
-def show_fsm():
-    machine.get_graph().draw('fsm.png', prog='dot', format='png')
-    return static_file('fsm.png', root='./', mimetype='image/png')
+# @app.route('/show-fsm', methods=['GET'])
+# def show_fsm():
+#     # machine.get_graph().draw('fsm.png', prog='dot', format='png')
+#     return static_file('fsm.png', root='./', mimetype='image/png')
 
 
 if __name__ == "__main__":
-    machine.get_graph().draw('show-fsm.png', prog='dot')
-    run(host="localhost", port=5000, debug=True, reloader=True)
+    # machine.get_graph().draw('show-fsm.png', prog='dot')
+    app.run(host="0.0.0.0", port=PORT, debug=True, reloader=True)
+

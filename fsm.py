@@ -4,6 +4,7 @@ from utils import send_text_message
 from utils import send_photo_message
 
 class TocMachine(GraphMachine):
+    major = 1
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(
             model=self,
@@ -14,6 +15,7 @@ class TocMachine(GraphMachine):
     def is_going_to_state1(self, event):
         if event.get("message"):
             text = event['message']['text']
+            self.major = 1
             return text.lower() == '機械'
         return False
 
@@ -49,6 +51,7 @@ class TocMachine(GraphMachine):
     def is_going_to_state7(self, event):
         if event.get("message"):
             text = event['message']['text']
+            self.major = 2
             return text.lower() == '資工'
         return False
 
@@ -107,25 +110,46 @@ class TocMachine(GraphMachine):
         print("I'm entering state3")
 
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "一上：微積分一、普化、靜力學、普物一")
-        send_text_message(sender_id, "一下：微積分二、工程圖學、動力學、普物二")
-        self.go_back(event)
+        if self.major==1:
+            print("123")
+            send_text_message(sender_id, "一上：微積分一、普化、靜力學、普物一")
+            send_text_message(sender_id, "一下：微積分二、工程圖學、動力學、普物二")
+            self.go_back(event)
+        else:
+            print("456")
+            send_text_message(sender_id, "一上：微積分一、程式設計一、靜力學、普物一")
+            send_text_message(sender_id, "一下：微積分二、工程圖學、程式設計二、普物二")
+            self.go_back(event)
 
     def on_enter_state4(self, event):
         print("I'm entering state4")
 
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "二上：機動一、工數一、材力一、熱力一")
-        send_text_message(sender_id, "二下：機動二、工數二、熱力二、電工學、機械製造")
-        self.go_back(event)
+        if self.major==1:
+            print("123")
+            send_text_message(sender_id, "二上：微積分一、普化、靜力學、普物一")
+            send_text_message(sender_id, "二下：微積分二、工程圖學、動力學、普物二")
+            self.go_back(event)
+        else:
+            print("456")
+            send_text_message(sender_id, "二上：微積分一、程式設計一、靜力學、普物一")
+            send_text_message(sender_id, "二下：微積分二、工程圖學、程式設計二、普物二")
+            self.go_back(event)
 
     def on_enter_state5(self, event):
         print("I'm entering state5")
 
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "三上：流體力學、機械設計、自動控制、電子學")
-        send_text_message(sender_id, "三下：熱傳學、專題實作、機工實驗")
-        self.go_back(event)
+        if self.major==1:
+            print("123")
+            send_text_message(sender_id, "三上：微積分一、普化、靜力學、普物一")
+            send_text_message(sender_id, "三下：微積分二、工程圖學、動力學、普物二")
+            self.go_back(event)
+        else:
+            print("456")
+            send_text_message(sender_id, "三上：微積分一、程式設計一、靜力學、普物一")
+            send_text_message(sender_id, "三下：微積分二、工程圖學、程式設計二、普物二")
+            self.go_back(event)
 
     def on_enter_state6(self, event):
         print("I'm entering state6")
