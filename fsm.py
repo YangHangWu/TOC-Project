@@ -117,8 +117,8 @@ class TocMachine(GraphMachine):
             self.go_back(event)
         else:
             print("456")
-            send_text_message(sender_id, "一上：微積分一、程式設計一、靜力學、普物一")
-            send_text_message(sender_id, "一下：微積分二、工程圖學、程式設計二、普物二")
+            send_text_message(sender_id, "一上：微積分一、程式設計一、計算機概論、普物一")
+            send_text_message(sender_id, "一下：微積分二、程式設計二、普物二、數位電路導論")
             self.go_back(event)
 
     def on_enter_state4(self, event):
@@ -127,13 +127,13 @@ class TocMachine(GraphMachine):
         sender_id = event['sender']['id']
         if self.major==1:
             print("123")
-            send_text_message(sender_id, "二上：微積分一、普化、靜力學、普物一")
-            send_text_message(sender_id, "二下：微積分二、工程圖學、動力學、普物二")
+            send_text_message(sender_id, "二上：工程數學一、熱力學一、材料力學一、機動學一")
+            send_text_message(sender_id, "二下：工程數學二、熱力學二、機械製造、機動學二、電工學")
             self.go_back(event)
         else:
             print("456")
-            send_text_message(sender_id, "二上：微積分一、程式設計一、靜力學、普物一")
-            send_text_message(sender_id, "二下：微積分二、工程圖學、程式設計二、普物二")
+            send_text_message(sender_id, "二上：數位系統、資料結構、工程數學、數位系統實驗")
+            send_text_message(sender_id, "二下：離散數學、計算機組織、機率與統計")
             self.go_back(event)
 
     def on_enter_state5(self, event):
@@ -142,13 +142,13 @@ class TocMachine(GraphMachine):
         sender_id = event['sender']['id']
         if self.major==1:
             print("123")
-            send_text_message(sender_id, "三上：微積分一、普化、靜力學、普物一")
-            send_text_message(sender_id, "三下：微積分二、工程圖學、動力學、普物二")
+            send_text_message(sender_id, "三上：自動控制、流體力學、機械設計、電子學")
+            send_text_message(sender_id, "三下：機工實驗、熱傳學、專題實作")
             self.go_back(event)
         else:
             print("456")
-            send_text_message(sender_id, "三上：微積分一、程式設計一、靜力學、普物一")
-            send_text_message(sender_id, "三下：微積分二、工程圖學、程式設計二、普物二")
+            send_text_message(sender_id, "三上：演算法、作業系統、微算機原理與應用(含實驗)、計算理論")
+            send_text_message(sender_id, "三下：程式語言、編譯系統、資訊專題（一）")
             self.go_back(event)
 
     def on_enter_state6(self, event):
